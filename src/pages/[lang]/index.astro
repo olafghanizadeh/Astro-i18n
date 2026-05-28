@@ -1,0 +1,18 @@
+---
+import { getTranslations, langs, DEFAULT_LANG, type Lang } from '../../i18n/i18n';
+
+export function getStaticPaths() {
+    return Object.keys(langs).map((lang) => {
+        return { params: { lang } };
+    });
+}
+
+const { lang = DEFAULT_LANG } = Astro.params as { lang: Lang };
+const { site, hero } = getTranslations(lang);
+---
+
+<h1>{site.brand}</h1>
+
+<p>{site.tagline}</p>
+
+<h2>{hero.title}</h2>

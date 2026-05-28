@@ -1,18 +1,28 @@
 ---
-import { getTranslations, langs, DEFAULT_LANG, type Lang } from '../../i18n/i18n';
+import Layout from '../../layouts/Layout.astro';
+import { getTranslations, languages, defaultLang, type Lang } from '../../i18n/utils';
 
+// SSG, ¿que rutas generar?
 export function getStaticPaths() {
-    return Object.keys(langs).map((lang) => {
-        return { params: { lang } };
-    });
+    return Object.keys(languages).map((lang) => ({ params: { lang } }));
 }
 
-const { lang = DEFAULT_LANG } = Astro.params as { lang: Lang };
+// Obtener idioma actual desde la URL
+const { lang = defaultLang } = Astro.params as { lang: Lang };
+
+// Obtener traducciones de ui para el idioma actual
 const { site, hero } = getTranslations(lang);
+const name = "Waruyumin";
+const wacho1 = "wacho1xwdddddddddd";   
 ---
 
-<h1>{site.brand}</h1>
+<Layout>
+    <h1>{site.brand}</h1>
 
-<p>{site.tagline}</p>
+    <p>{site.tagline}</p>
 
-<h2>{hero.title}</h2>
+    <h2>{hero.title}</h2>
+
+    <p>{hero.description({ name })}</p>
+    <p>{hero.othervar({ foo: wacho1, bar: 'wacho2' })}</p>
+</Layout>

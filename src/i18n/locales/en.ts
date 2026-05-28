@@ -1,6 +1,7 @@
-import type { Translation } from '../translations';
+import type { Translation } from '../interfaces/translations';
+import { interpolate } from '../utils';
 
-export const en: Translation =
+export const en =
 {
     site:
     {
@@ -11,6 +12,8 @@ export const en: Translation =
     hero:
     {
         title: 'Welcome',
-        subtitle: 'Build fast'
+        subtitle: 'Build fast',
+        description: interpolate('Hello {name}! Welcome to our website.'),
+        othervar: interpolate('Test {foo} and {bar}')
     }
-};
+} satisfies Translation;

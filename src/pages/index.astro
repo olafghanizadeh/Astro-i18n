@@ -1,4 +1,6 @@
 ---
-import { DEFAULT_LANG } from '../i18n/i18n';
-return Astro.redirect(`/${DEFAULT_LANG}`);
+import { defaultLang } from '../i18n/utils';
+
+// Redirigir a la ruta del idioma por defecto
+return Astro.redirect(`/${defaultLang}`);
 ---

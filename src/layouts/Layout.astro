@@ -1,5 +1,12 @@
+---
+import { defaultLang, type Lang } from '../i18n/utils';
+import LanguagePicker from '../components/LanguagePicker.astro';
+
+const { lang = defaultLang } = Astro.params as { lang: Lang };
+---
+
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -10,6 +17,9 @@
 	</head>
 	<body>
 		<slot />
+		<footer>
+			<LanguagePicker />
+		</footer>
 	</body>
 </html>
 

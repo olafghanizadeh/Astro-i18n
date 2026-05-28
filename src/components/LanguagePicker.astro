@@ -1,0 +1,10 @@
+---
+import { languages } from '../i18n/utils';
+---
+<ul>
+  {Object.keys(languages).map((lang) => (
+    <li>
+      <a href={`/${lang}/`}>{lang}</a>
+    </li>
+  ))}
+</ul>

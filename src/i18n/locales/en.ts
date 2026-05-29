@@ -1,4 +1,4 @@
-import type { Translation } from '../interfaces/translations';
+import type { Translation } from '../types/translations';
 import { interpolate } from '../utils';
 
 export const en =

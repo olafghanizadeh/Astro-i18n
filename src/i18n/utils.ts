@@ -1,30 +1,21 @@
-import { es } from './locales/es';
-import { en } from './locales/en';
+import type { Lang } from './config';
+import { languages, defaultLang } from './config';
 
-// Object containing the translations for each supported language
-export const languages =
-{
-    es,
-    en
-};
-
-// Type of the keys of the languages object, which are the supported language codes
-export type Lang = keyof typeof languages;
-
-export const defaultLang = 'en';
+// Re-export for convenience
+export type { Lang };
+export { languages, defaultLang };
 
 // Function to get the translations for a given language code
-export function getTranslations(lang: Lang)
-{
+export function getTranslations(lang: Lang) {
     return languages[lang];
 }
 
 // Function to determine the language from the URL path (e.g., /en/ or /es/)
 // If the language code is not recognized, it falls back to the default language.
 export function getLangFromUrl(url: URL) {
-  const [, lang] = url.pathname.split('/');
-  if (lang in languages) return lang as keyof typeof languages;
-  return defaultLang;
+    const [, lang] = url.pathname.split('/');
+    if (lang in languages) return lang as Lang;
+    return defaultLang;
 }
 
 // Type to infer the parameters from a template string like "Hello {name}!"

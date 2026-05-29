@@ -1,10 +1,35 @@
 ---
-import { languages } from '../i18n/utils';
+import { translations } from '../i18n';
+
+const currentPage = Astro.url.pathname.split('/').filter(Boolean).slice(1).join('/');
 ---
-<ul>
-  {Object.keys(languages).map((lang) => (
+<ul class="language-picker" aria-label="Language selector">
+  {Object.keys(translations).map((lang) => (
     <li>
-      <a href={`/${lang}/`}>{lang}</a>
+      <a href={`/${lang}/${currentPage}`}>{lang}</a>
     </li>
   ))}
 </ul>
+
+<style>
+  .language-picker {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    color: #394150;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  a:hover {
+    color: #1d2433;
+  }
+</style>

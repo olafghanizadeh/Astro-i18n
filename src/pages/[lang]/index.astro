@@ -1,28 +1,94 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getTranslations, languages, defaultLang, type Lang } from '../../i18n/utils';
+import { getTranslations, translations, defaultLang, type Lang } from '../../i18n';
 
-// SSG, ¿que rutas generar?
+// Generate static paths for each language
 export function getStaticPaths() {
-    return Object.keys(languages).map((lang) => ({ params: { lang } }));
+    return Object.keys(translations).map((lang) => ({ params: { lang } }));
 }
 
-// Obtener idioma actual desde la URL
+// Get the language from the URL params
 const { lang = defaultLang } = Astro.params as { lang: Lang };
 
-// Obtener traducciones de ui para el idioma actual
+// Get the translations for the current language
 const { site, hero } = getTranslations(lang);
-const name = "Waruyumin";
-const wacho1 = "wacho1xwdddddddddd";   
+
+// Example variables used in interpolation strings
+const visitorName = 'Astro';
+const firstValue = 'i18n';
+const secondValue = 'TypeScript';
+
 ---
 
-<Layout>
-    <h1>{site.brand}</h1>
+<Layout lang={lang}>
+    <main class="page">
+        <section class="hero">
+            <p class="eyebrow">{site.tagline}</p>
+            <h1>{site.brand}</h1>
+            <h2>{hero.title}</h2>
 
-    <p>{site.tagline}</p>
+            <div class="examples">
+                <p>{hero.description({ name: visitorName })}</p>
+                <p>{hero.othervar({ foo: firstValue, bar: secondValue })}</p>
+            </div>
 
-    <h2>{hero.title}</h2>
-
-    <p>{hero.description({ name })}</p>
-    <p>{hero.othervar({ foo: wacho1, bar: 'wacho2' })}</p>
+            <a href={`/${lang}/about/`}>About</a>
+        </section>
+    </main>
 </Layout>
+
+<style>
+    .page {
+        display: grid;
+        min-height: 72vh;
+        place-items: center;
+        padding: 2.5rem 1.5rem;
+    }
+
+    .hero {
+        width: min(100%, 40rem);
+    }
+
+    .eyebrow {
+        color: #5f6f52;
+        font-size: 0.875rem;
+        font-weight: 700;
+        margin: 0 0 0.75rem;
+        text-transform: uppercase;
+    }
+
+    a {
+        color: #394150;
+        display: inline-block;
+        font-weight: 700;
+        margin-top: 2rem;
+        text-decoration-color: #9db675;
+        text-underline-offset: 0.25rem;
+    }
+
+    h1 {
+        color: #1d2433;
+        font-size: 3rem;
+        line-height: 1;
+        margin: 0;
+    }
+
+    h2 {
+        color: #394150;
+        font-size: 1.5rem;
+        font-weight: 500;
+        margin: 1rem 0 2rem;
+    }
+
+    .examples {
+        border-left: 3px solid #9db675;
+        color: #4b5563;
+        display: grid;
+        gap: 0.75rem;
+        padding-left: 1rem;
+    }
+
+    .examples p {
+        margin: 0;
+    }
+</style>

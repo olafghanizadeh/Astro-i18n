@@ -1,11 +1,11 @@
-import type { Translation } from '../types/translations';
+import type { Translations } from '../schema';
 import { interpolate } from '../utils';
 
 export const es =
 {
     site:
     {
-        brand: 'Braco',
+        brand: 'Mi Marca',
         tagline: 'Haz más'
     },
 
@@ -15,5 +15,11 @@ export const es =
         subtitle: 'Construye rápido',
         description: interpolate('¡Hola {name}! Bienvenido a nuestro sitio web.'),
         othervar: interpolate('Prueba {foo} y {bar}')
+    },
+
+    about:
+    {
+        title: 'Acerca de',
+        description: 'Esta pagina demuestra una ruta localizada simple usando el mismo modulo i18n.'
     }
-} satisfies Translation;
+} satisfies Translations;

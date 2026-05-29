@@ -1,0 +1,64 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getTranslations, translations, defaultLang, type Lang } from '../../i18n';
+
+export function getStaticPaths() {
+    return Object.keys(translations).map((lang) => ({ params: { lang } }));
+}
+
+const { lang = defaultLang } = Astro.params as { lang: Lang };
+const { site, about } = getTranslations(lang);
+---
+
+<Layout lang={lang}>
+    <main class="page">
+        <section class="content">
+            <p class="eyebrow">{site.brand}</p>
+            <h1>{about.title}</h1>
+            <p>{about.description}</p>
+            <a href={`/${lang}/`}>Home</a>
+        </section>
+    </main>
+</Layout>
+
+<style>
+    .page {
+        display: grid;
+        min-height: 72vh;
+        place-items: center;
+        padding: 2.5rem 1.5rem;
+    }
+
+    .content {
+        width: min(100%, 40rem);
+    }
+
+    .eyebrow {
+        color: #5f6f52;
+        font-size: 0.875rem;
+        font-weight: 700;
+        margin: 0 0 0.75rem;
+        text-transform: uppercase;
+    }
+
+    h1 {
+        color: #1d2433;
+        font-size: 3rem;
+        line-height: 1;
+        margin: 0 0 1rem;
+    }
+
+    p {
+        color: #4b5563;
+        font-size: 1.125rem;
+        line-height: 1.7;
+        margin: 0 0 2rem;
+    }
+
+    a {
+        color: #394150;
+        font-weight: 700;
+        text-decoration-color: #9db675;
+        text-underline-offset: 0.25rem;
+    }
+</style>

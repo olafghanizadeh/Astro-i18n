@@ -1,8 +1,10 @@
 # Astro i18n
 
-An internationalization setup for Astro using a lightweight, typed i18n module for organizing translations.
+A lightweight, typed i18n starter for Astro.
 
-The project keeps the UI intentionally simple so the translation structure stays easy to inspect, extend, and reuse.
+Use it as a reference implementation or copy the `src/i18n` module directly into your own project and extend it as needed.
+
+The UI is intentionally minimal so the focus stays on the translation structure, routing, and type-safe interpolation.
 
 It also includes helper functions for loading translations and interpolating values.
 
@@ -21,10 +23,10 @@ src/i18n/
 
 - Typed locale dictionaries with `satisfies`.
 - Central language registry.
+- Type-safe interpolation: TypeScript reports missing or extra placeholders when translations differ between locales.
 - Default language redirect from `/`.
 - Static routes generated from available translations.
 - Simple interpolation helper for values like `{name}`.
-- Type-safe interpolation: TypeScript warns at the call site in `.astro` files if placeholders differ between locales.
 
 ## Usage
 
@@ -38,7 +40,7 @@ export interface Translations {
   };
   hero: {
     title: string;
-    description: Interpolation;
+    description: Interpolation;   // type for interpolated strings
   };
 }
 ```
@@ -51,7 +53,7 @@ import { interpolate } from '../utils';
 
 export const en = {
   site: {
-    brand: 'Braco',
+    brand: 'Jhon',
     tagline: 'Do more',
   },
   hero: {
@@ -61,29 +63,32 @@ export const en = {
 } satisfies Translations;
 ```
 
-> **Tip:** If the placeholders inside `interpolate(...)` are not consistent across all locale files, TypeScript will flag every `.astro` file that uses that translation with a missing or extra parameter. This keeps all locales in sync automatically.
+> [!TIP]
+> If the placeholders inside `interpolate(...)` are not consistent across all locale files, TypeScript will flag every `.astro` file that uses that translation with a missing or extra parameter. This keeps all locales in sync automatically.
 >
 > ```ts
-> // en.ts — contains {foo} and {bar}
-> othervar: interpolate(‘Test {foo} and {bar}’)
+> // en.ts
+> someVariable: interpolate('Test {foo} and {bar}')
 >
-> // es.ts — contains {foo}, {bar}, and {asd}
-> othervar: interpolate(‘Test {foo} and {bar} {asd}’)
+> // es.ts (unexpected placeholder: {asd})
+> someVariable: interpolate('Test {foo} and {bar}. {asd}')
 > ```
 > ```astro
-> // in /index.astro
 > ---
-> const text = t.hero.othervar({ foo: 'a', bar: 'b' })
+> const text = hero.someVariable({ foo: 'a', bar: 'b' });
 > ---
->
-> // or inside html
-> <p>{hero.othervar({ foo: 'a', bar: 'b' })}</p>
->
-> ❌ Error [Property 'asd' is missing in type...]
-> TypeScript expects {foo, bar, asd} because es.ts requires it
 > ```
+>
+> ```astro
+> <p>{hero.someVariable({ foo: 'a', bar: 'b' })}</p>
+>```
+> ```txt
+> ❌ Property 'asd' is missing in type ...
+> ```
+> TypeScript expects {foo, bar, asd} because es.ts requires it
 
-Register the locale in `src/i18n/config.ts`. And define your defalut lang
+
+Register the locale in `src/i18n/config.ts`. And define your defalut language.
 
 ```ts
 import { en } from './locales/en';
@@ -100,11 +105,14 @@ export const translations = {
 export const defaultLang: Lang = 'en';
 ```
 
-Import the public i18n entrypoint inside an Astro page or component.
+Import the public i18n entrypoint inside an Astro page or component. `getTranslations(lang)` loads the translations for the current language.
 
 ```astro
 ---
-import { getTranslations, type Lang } from '../i18n';
+import { getTranslations, translations, defaultLang, type Lang } from '../../i18n';
+
+// Get the language from the URL params (e.g. /en)
+const { lang = defaultLang } = Astro.params as { lang: Lang };
 
 const { hero } = getTranslations(lang as Lang);
 ---
@@ -112,8 +120,13 @@ const { hero } = getTranslations(lang as Lang);
 <h1>{hero.title}</h1>
 <p>{hero.description({ name: 'Astro' })}</p>
 ```
+> [!NOTE]
+> In pages under `[lang]`, use `Astro.params` to access the current language.
+>
+>For components, middleware, or utilities where `Astro.params` is unavailable, use `getLangFromUrl(Astro.url)` instead.
 
-For localized Astro pages, define a dynamic route segment `[lang]` (e.g. `src/pages/[lang]/index.astro`). This will generate one static static page per locale.
+
+For localized Astro pages, define a dynamic route segment `[lang]` (e.g. `src/pages/[lang]/index.astro`). This will generate one static page per locale.
 
 ```ts
 import { translations } from '../../i18n';

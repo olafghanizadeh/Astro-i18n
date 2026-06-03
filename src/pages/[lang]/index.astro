@@ -2,22 +2,21 @@
 import Layout from '../../layouts/Layout.astro';
 import { getTranslations, translations, defaultLang, type Lang } from '../../i18n';
 
-// Generate static paths for each language
+// Generate a page for each supported language
 export function getStaticPaths() {
     return Object.keys(translations).map((lang) => ({ params: { lang } }));
 }
 
-// Get the language from the URL params
+// Current language from URL or default
 const { lang = defaultLang } = Astro.params as { lang: Lang };
 
-// Get the translations for the current language
+// Load translations for the current language
 const { site, hero } = getTranslations(lang);
 
-// Example variables used in interpolation strings
+// Example variables for interpolation
 const visitorName = 'Astro';
-const firstValue = 'i18n';
-const secondValue = 'TypeScript';
-
+const foo = 'i18n';
+const bar = 'TypeScript';
 ---
 
 <Layout lang={lang}>
@@ -29,7 +28,7 @@ const secondValue = 'TypeScript';
 
             <div class="examples">
                 <p>{hero.description({ name: visitorName })}</p>
-                <p>{hero.othervar({ foo: firstValue, bar: secondValue })}</p>
+                <p>{hero.example({ foo: foo, bar: bar })}</p>
             </div>
 
             <a href={`/${lang}/about/`}>About</a>

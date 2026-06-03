@@ -9,8 +9,8 @@ export const translations = {
 } as const;
 
 
-// Type of the supported languages
+// Supported language codes
 export type Lang = keyof typeof translations;
 
-// Default language to use when no specific language is detected
+// Fallback language
 export const defaultLang: Lang = 'en';

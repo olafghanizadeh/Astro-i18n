@@ -1,3 +1,4 @@
+
 export { defaultLang, translations } from './config';
 export type { Lang } from './config';
 export {

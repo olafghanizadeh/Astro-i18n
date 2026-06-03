@@ -1,6 +1,7 @@
 import type { Translations } from '../schema';
 import { interpolate } from '../utils';
 
+// Always use `satisfies Translations` to validate the translation structure.
 export const en =
 {
     site:
@@ -14,7 +15,7 @@ export const en =
         title: 'Welcome',
         subtitle: 'Build fast',
         description: interpolate('Hello {name}! Welcome to our website.'),
-        othervar: interpolate('Test {foo} and {bar}'), 
+        example: interpolate('Test {foo} and {bar}'), 
     },
 
     about:

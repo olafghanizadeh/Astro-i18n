@@ -4,13 +4,13 @@ import { translations, defaultLang } from './config';
 // DX, type for interpolation parameters and functions
 export type Interpolation = (params?: any) => string;
 
-// Function to get the translations for a given language code
+// Main function to get the translations for a given language code
 export function getTranslations(lang: Lang) {
     return translations[lang];
 }
 
-// Function to determine the language from the URL path (e.g., /en/ or /es/)
-// use it in components no pages middleware, utilities
+// Get the language from a URL path.
+// Use this in components, middleware, or utilities where 'Astro.params' is unavailable.
 export function getLangFromUrl(url: URL) {
     const [, lang] = url.pathname.split('/');
     if (lang in translations) return lang as Lang;

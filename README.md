@@ -88,13 +88,13 @@ export const en = {
 > TypeScript expects {foo, bar, asd} because es.ts requires it
 
 
-Register the locale in `src/i18n/config.ts`. And define your defalut language.
+Register the locale in `src/i18n/config.ts`. And define your default language.
 
 ```ts
 import { en } from './locales/en';
 import { es } from './locales/es';
 
-export const translations = {
+export const languages = {
   en,
   es,
   // ...add here
@@ -109,29 +109,24 @@ Import the public i18n entrypoint inside an Astro page or component. `getTransla
 
 ```astro
 ---
-import { getTranslations, translations, defaultLang, type Lang } from '../../i18n';
+import { getTranslations, getLangFromUrl, translations } from '../../i18n';
 
 // Get the language from the URL params (e.g. /en)
-const { lang = defaultLang } = Astro.params as { lang: Lang };
+const lang = getLangFromUrl(Astro.url);
 
-const { hero } = getTranslations(lang as Lang);
+const { hero } = getTranslations(lang);
 ---
 
 <h1>{hero.title}</h1>
 <p>{hero.description({ name: 'Astro' })}</p>
 ```
-> [!NOTE]
-> In pages under `[lang]`, use `Astro.params` to access the current language.
->
->For components, middleware, or utilities where `Astro.params` is unavailable, use `getLangFromUrl(Astro.url)` instead.
-
 
 For localized Astro pages, define a dynamic route segment `[lang]` (e.g. `src/pages/[lang]/index.astro`). This will generate one static page per locale.
 
 ```ts
-import { translations } from '../../i18n';
+import { languages } from '../../i18n';
 
 export function getStaticPaths() {
-  return Object.keys(translations).map((lang) => ({ params: { lang } }));
+  return Object.keys(languages).map((lang) => ({ params: { lang } }));
 }
 ```

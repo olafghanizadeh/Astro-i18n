@@ -1,14 +1,14 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getTranslations, translations, defaultLang, type Lang } from '../../i18n';
+import { getTranslations, languages, getLangFromUrl } from '../../i18n';
 
 // Generate a page for each supported language
 export function getStaticPaths() {
-    return Object.keys(translations).map((lang) => ({ params: { lang } }));
+    return Object.keys(languages).map((lang) => ({ params: { lang } }));
 }
 
 // Current language from URL or default
-const { lang = defaultLang } = Astro.params as { lang: Lang };
+const lang = getLangFromUrl(Astro.url);
 
 // Load translations for the current language
 const { site, hero } = getTranslations(lang);

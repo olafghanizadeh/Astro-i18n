@@ -1,11 +1,11 @@
-
-export { defaultLang, translations } from './config';
-export type { Lang } from './config';
+export {
+    defaultLang,
+    languages
+} from './config';
 export {
     getLangFromUrl,
     getTranslations,
     interpolate,
 } from './utils';
-export type {
-    Interpolation,
-} from './utils';
+export type { Lang } from './config';
+export type { Interpolation } from './utils';

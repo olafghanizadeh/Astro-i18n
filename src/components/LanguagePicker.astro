@@ -1,10 +1,10 @@
 ---
-import { translations } from '../i18n';
+import { languages } from '../i18n';
 
 const currentPage = Astro.url.pathname.split('/').filter(Boolean).slice(1).join('/');
 ---
 <ul class="language-picker" aria-label="Language selector">
-  {Object.keys(translations).map((lang) => (
+  {Object.keys(languages).map((lang) => (
     <li>
       <a href={`/${lang}/${currentPage}`}>{lang}</a>
     </li>
